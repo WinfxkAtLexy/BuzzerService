@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="MyJpanel">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../../MES/MyJpanel" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../../../MES/MyJpanel/src" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/../../../MES/MyJpanel" recursive="false" />
+  </library>
+</component>

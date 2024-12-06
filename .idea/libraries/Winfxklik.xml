@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Winfxklik">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../../Winfxk/Winfxklik" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../../../Winfxk/Winfxklik/src" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/../../../Winfxk/Winfxklik" recursive="false" />
+  </library>
+</component>
