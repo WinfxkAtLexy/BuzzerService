@@ -19,6 +19,8 @@ import cn.winfxk.lexy.z1.Deploy
 import cn.winfxk.lexy.z1.message.Message
 import cn.winfxk.lexy.z1.message.MessageType
 import cn.winfxk.lexy.z1.message.OnMessageResponse
+import cn.winfxk.lexy.z1.service.rec.CallMessage
+import cn.winfxk.lexy.z1.service.rec.EmptyMessage
 import cn.winfxk.libk.config.Config
 import cn.winfxk.libk.log.Log
 import cn.winfxk.libk.tool.tab.Tabable
@@ -44,7 +46,11 @@ class Client(val handler: MyBusinessHandler, val channel: Channel) : Tabable {
      * 接收到消息
      */
     fun receiveMessages(messageID: String, json: JSONObject): Message? {
-        return Message(true, "OK")
+        val type = (json["type"] ?: "").toString();
+        return when (type.lowercase()) {
+            CallMessage.type.lowercase() -> CallMessage(type, json, this)
+            else                         -> EmptyMessage(type, json, this)
+        }.respond()
     }
 
     fun sendMessage(message: Message, response: OnMessageResponse? = null) {

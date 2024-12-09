@@ -15,9 +15,37 @@
 * Created Date: 2024/11/29  14:38 */
 package cn.winfxk.lexy.z1.link
 
+import cn.winfxk.lexy.z1.isRunning
 import cn.winfxk.lexy.z1.message.Message
-import java.util.*
+import cn.winfxk.lexy.z1.service.Client
+import cn.winfxk.libk.log.Log
+import cn.winfxk.libk.tool.Tool
 
-class LinkMessage(val message: Message, val messageID: String) {
-     val key = UUID.randomUUID().toString();
+class LinkMessage(client: Client, val message: Message, val key: String) : Runnable {
+    var time = System.currentTimeMillis();
+    private val log = Log("${client.name}-${this.javaClass.simpleName}")
+    @Volatile
+    private var isRuning = true;
+
+    init {
+        log.i("客户端报警消息已接收")
+        Thread(this).start();
+    }
+
+    override fun run() {
+        var new = time;
+        while (isRuning()) {
+            new = time;
+            Tool.sleep(4000);
+            if (! isRuning()) break;
+            if (new == time) {
+                log.i("客户端报警终止! ")
+                LinkMain.getList().remove(key);
+                isRuning = false;
+                break;
+            }
+        }
+    }
+
+    private fun isRuning() = isRuning && isRunning;
 }

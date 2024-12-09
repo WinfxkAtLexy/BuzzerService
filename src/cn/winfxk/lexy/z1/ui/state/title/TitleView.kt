@@ -114,5 +114,4 @@ class TitleView : Selement(), MouseListener {
     override fun mouseExited(e: MouseEvent?) {
         GUI.getMain().getFrame().cursor = GUI.cursor
     }
-
 }

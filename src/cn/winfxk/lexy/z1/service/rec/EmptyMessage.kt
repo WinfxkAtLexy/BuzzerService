@@ -12,23 +12,24 @@
 * Author： Winfxk
 * Created PCUser: kc4064 
 * Web: http://winfxk.com
-* Created Date: 2024/11/29  14:36 */
-package cn.winfxk.lexy.z1.link
+* Created Date: 2024/12/9  13:12 */
+package cn.winfxk.lexy.z1.service.rec
 
-import java.util.concurrent.ConcurrentHashMap
+import cn.winfxk.lexy.z1.message.Message
+import cn.winfxk.lexy.z1.service.Client
+import com.alibaba.fastjson2.JSONObject
 
-class LinkMain {
+class EmptyMessage(type: String, message: JSONObject,client: Client) : RecMessage(type, message,client) {
     companion object {
-        private lateinit var main: LinkMain;
-        private val list = ConcurrentHashMap<String, LinkMessage>();
-        fun getMain() = main;
-        fun getList() = list;
-        fun addWarning(message: LinkMessage) {
-            list[message.key] = message;
-        }
-        fun isEmpty() = list.isEmpty();
+        private val emptyJson = JSONObject();
+        private const val emptyMessage = "服务端未对此消息做任何处理！";
     }
-    init {
-        main = this;
+
+    override fun respond(): Message {
+        return Message(
+            isSuccess = false,
+            message = emptyMessage,
+            json = emptyJson
+        );
     }
 }

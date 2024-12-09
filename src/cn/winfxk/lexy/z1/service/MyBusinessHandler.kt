@@ -49,7 +49,7 @@ class MyBusinessHandler : ChannelInboundHandlerAdapter() {
          * 当前服务器的最大请求数
          */
         @Volatile
-        var maxRequestCount = Deploy.deploy.config.getInt("总请求数", 0);
+        var maxRequestCount = Deploy.deploy.config.getLong("总请求数", 0);
         /**
          * 当前报警数
          */
@@ -59,7 +59,7 @@ class MyBusinessHandler : ChannelInboundHandlerAdapter() {
          * 最大报警数
          */
         @Volatile
-        var maxAlarmsCount = Deploy.deploy.config.getInt("最大报警数", 0);
+        var maxAlarmsCount = Deploy.deploy.config.getLong("最大报警数", 0);
         /**
          * 最大客户端数
          */

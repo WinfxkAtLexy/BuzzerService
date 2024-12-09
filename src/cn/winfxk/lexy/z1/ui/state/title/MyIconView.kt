@@ -18,14 +18,11 @@ package cn.winfxk.lexy.z1.ui.state.title
 import cn.winfxk.lexy.z1.Deploy
 import cn.winfxk.lexy.z1.isRunning
 import cn.winfxk.lexy.z1.link.LinkMain
-import cn.winfxk.lexy.z1.link.LinkMessage
-import cn.winfxk.lexy.z1.message.Message
 import cn.winfxk.lexy.z1.ui.GUI
 import cn.winfxk.libk.log.Log
+import cn.winfxk.libk.tool.Tool
 import cn.winfxk.tool.view.MyJPanel
 import cn.winfxk.tool.view.image.ImageView
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import javax.swing.JLabel
 
 class MyIconView : MyJPanel() {
@@ -46,13 +43,13 @@ class MyIconView : MyJPanel() {
     }
 
     private fun startWhile() {
-        Deploy.scope.launch {
+        Thread {
             while (isRunning) {
-                delay(100);
+                Tool.sleep(100);
                 if (LinkMain.isEmpty()) if (type != IconType.Normal) resetIcon(IconType.Normal)
                 if (! LinkMain.isEmpty()) if (type != IconType.Warning) resetIcon(IconType.Warning)
             }
-        }
+        }.start();
     }
 
     override fun start() {
