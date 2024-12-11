@@ -19,6 +19,15 @@ import cn.winfxk.lexy.z1.message.Message
 import cn.winfxk.lexy.z1.service.Client
 import com.alibaba.fastjson2.JSONObject
 
-abstract class RecMessage(private val type: String, private val message: JSONObject, private val client: Client) {
+abstract class RecMessage(val type: String, val json: JSONObject, val client: Client) {
+    companion object {
+        protected val emptyJson = JSONObject();
+    }
+
     abstract fun respond(): Message?;
+    protected fun getErrorMessage(message: String) = Message(
+        isSuccess = false,
+        json = emptyJson,
+        message = message
+    );
 }

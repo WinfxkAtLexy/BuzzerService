@@ -15,6 +15,8 @@
 * Created Date: 2024/12/9  15:16 */
 package cn.winfxk.lexy.z1.service.rec
 
+import cn.winfxk.lexy.z1.link.LinkMain
+import cn.winfxk.lexy.z1.link.LinkMessage
 import cn.winfxk.lexy.z1.message.Message
 import cn.winfxk.lexy.z1.service.Client
 import com.alibaba.fastjson2.JSONObject
@@ -25,6 +27,14 @@ class CallMessage(type: String, message: JSONObject, client: Client) : RecMessag
     }
 
     override fun respond(): Message? {
-
+        val callID = json["CallID"]?.toString();
+        if (callID.isNullOrBlank()) return getErrorMessage("无法获取呼叫ID");
+        var call = LinkMain.getList()[callID];
+        if (call == null) {
+            call = LinkMessage(client, callID, json);
+            LinkMain.addWarning(call);
+        }
+        call.resetTime();
+        return Message(isSuccess = true, message = "呼叫成功！")
     }
 }

@@ -38,8 +38,10 @@ class Client(val handler: MyBusinessHandler, val channel: Channel) : Tabable {
     lateinit var name: String;
     var isInitialized = false;
     lateinit var config: Config;
+    var type = "";
 
     companion object {
+        const val allType = "all";
         private val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
     /**

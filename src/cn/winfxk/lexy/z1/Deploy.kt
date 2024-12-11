@@ -17,14 +17,13 @@ package cn.winfxk.lexy.z1
 
 import cn.winfxk.libk.config.Config
 import cn.winfxk.libk.log.Log
+import cn.winfxk.libk.tool.Tool
 import cn.winfxk.libk.tool.utils.getImageByjar
 import cn.winfxk.libk.tool.utils.getStreamByJar
 import cn.winfxk.libk.tool.utils.readFont
 import cn.winfxk.libk.tool.utils.throwException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.awt.Dimension
 import java.awt.Toolkit
 import java.awt.image.BufferedImage
@@ -75,14 +74,13 @@ class Deploy {
             log.e("设置的监听端口不正确！");
             throw Exception("设置的监听端口不正确！");
         }
-        scope.launch {
+        Thread {
             log.i("配置文件守护服务启动.")
             while (isRunning) {
-                delay(600000)
-                log.i("正在保存配置文件")
-                config.save();
+                Tool.sleep(600000)
+                log.i("正在保存配置文件[${config.save()}]")
             }
-        }
+        }.start()
     }
     /**
      * 服务器监听端口

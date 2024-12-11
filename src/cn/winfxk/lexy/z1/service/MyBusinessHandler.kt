@@ -36,7 +36,7 @@ class MyBusinessHandler : ChannelInboundHandlerAdapter() {
         private val log = Log(MyBusinessHandler::class.java.simpleName)
         private val clients = ConcurrentHashMap<String, Client>();
         private val request = ConcurrentHashMap<String, OnMessageResponse>();
-
+        fun getClients() = clients;
         fun addResponse(ID: String, response: OnMessageResponse) {
             request[ID] = response;
         }
@@ -50,11 +50,6 @@ class MyBusinessHandler : ChannelInboundHandlerAdapter() {
          */
         @Volatile
         var maxRequestCount = Deploy.deploy.config.getLong("总请求数", 0);
-        /**
-         * 当前报警数
-         */
-        @Volatile
-        var alarmsCount = 0;
         /**
          * 最大报警数
          */

@@ -12,27 +12,33 @@
 * Author： Winfxk
 * Created PCUser: kc4064 
 * Web: http://winfxk.com
-* Created Date: 2024/11/29  14:36 */
+* Created Date: 2024/12/10  10:22 */
 package cn.winfxk.lexy.z1.link
 
-import cn.winfxk.lexy.z1.service.MyBusinessHandler
-import java.util.concurrent.ConcurrentHashMap
+import cn.winfxk.lexy.z1.isRunning
+import cn.winfxk.libk.log.Log
+import cn.winfxk.libk.tool.Tool
 
-class LinkMain {
-    companion object {
-        private lateinit var main: LinkMain;
-        private val list = ConcurrentHashMap<String, LinkMessage>();
-        fun getMain() = main;
-        fun getList() = list;
-        fun addWarning(message: LinkMessage) {
-            MyBusinessHandler.maxAlarmsCount += 1;
-            list[message.key] = message;
-        }
-
-        fun isEmpty() = list.isEmpty();
-    }
+class CallService : Thread() {
+    private val log = Log(this.javaClass.simpleName)
 
     init {
-        main = this;
+        log.i("呼叫服务初始化~")
+    }
+
+    override fun run() {
+        log.i("呼叫服务启动!");
+        while (isRunning) {
+            Tool.sleep(1000);
+            if (! isRunning) {
+                log.i("呼叫服务已关闭!");
+                break;
+            }
+            if (LinkMain.isEmpty()) continue;
+            for (link in LinkMain.getList().values) {
+                if (! link.isRuning()) continue;
+                link.call();
+            }
+        }
     }
 }

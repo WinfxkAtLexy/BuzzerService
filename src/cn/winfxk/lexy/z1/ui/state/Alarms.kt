@@ -16,6 +16,7 @@
 package cn.winfxk.lexy.z1.ui.state
 
 import cn.winfxk.lexy.z1.Deploy
+import cn.winfxk.lexy.z1.link.LinkMain
 import cn.winfxk.lexy.z1.service.MyBusinessHandler
 import cn.winfxk.lexy.z1.ui.GUI
 import cn.winfxk.tool.view.image.ImageView
@@ -23,7 +24,6 @@ import cn.winfxk.tool.view.toCenter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.awt.Color
-import java.awt.Cursor
 import java.awt.Font
 import java.awt.event.MouseEvent
 import java.awt.event.MouseListener
@@ -52,7 +52,7 @@ class Alarms : Selement(), MouseListener {
         add(context);
         Deploy.scope.launch {
             while (cn.winfxk.lexy.z1.isRunning) {
-                context.text = "${MyBusinessHandler.alarmsCount}/${MyBusinessHandler.maxAlarmsCount}"
+                context.text = "${LinkMain.getList().size}/${MyBusinessHandler.maxAlarmsCount}"
                 delay(5000);
             }
         }
