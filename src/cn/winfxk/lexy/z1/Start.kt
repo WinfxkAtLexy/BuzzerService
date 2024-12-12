@@ -133,6 +133,7 @@ fun close(status: Int = - 1) {
     GUI.getMain().close()
     if (MySystemTray.isInitialized()) MySystemTray.getMain().close();
     Service.getMain().shutdown()
+    Log.i("Close", "关闭前保存数据")
     Deploy.deploy.config.save();
     Log.i("Close", "关闭应用程序...")
     exitProcess(status)

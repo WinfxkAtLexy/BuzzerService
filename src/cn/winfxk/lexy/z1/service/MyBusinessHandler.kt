@@ -43,18 +43,23 @@ class MyBusinessHandler : ChannelInboundHandlerAdapter() {
         /**
          * 本次启动后接收到的请求数
          */
-        @Volatile
-        var requestCount = 0;
+        @Volatile var requestCount = 0;
         /**
          * 当前服务器的最大请求数
          */
-        @Volatile
-        var maxRequestCount = Deploy.deploy.config.getLong("总请求数", 0);
+        @Volatile var maxRequestCount = Deploy.deploy.config.getLong("总请求数", 0);
         /**
          * 最大报警数
          */
-        @Volatile
-        var maxAlarmsCount = Deploy.deploy.config.getLong("最大报警数", 0);
+        @Volatile var maxAlarmsCount = Deploy.deploy.config.getLong("最大报警数", 0);
+        /**
+         * 程序总运行时间
+         */
+        @Volatile var maxRunTime = Deploy.deploy.config.getLong("运行时间", 0L);
+        /**
+         * 本次程序运行时间
+         */
+        @Volatile var runTime = 0L;
         /**
          * 最大客户端数
          */
@@ -63,6 +68,7 @@ class MyBusinessHandler : ChannelInboundHandlerAdapter() {
          * 当前已连接的客户端数量
          */
         fun getClientCount() = clients.size;
+
     }
 
     /**
@@ -84,9 +90,19 @@ class MyBusinessHandler : ChannelInboundHandlerAdapter() {
             val root = message.toJson();
             val clientID = root["ClientID"].objToString();
             val clientName = root["ClientName"].objToString();
-            clientName?.also { client.name = it; }
-            clientID?.also { client.id = it }
-            if (! clientName.isNullOrBlank() && ! clientID.isNullOrBlank()) client.isInitialized = true;
+            val ClientType = root["ClientType"].objToString();
+            clientName?.also {
+                if (client.name.isBlank() || ! client.name.equals(it, ignoreCase = true)) Log.i(client.tag, "设置客户端名称：$it")
+                client.name = it;
+            }
+            clientID?.also {
+                if (client.id.isBlank() || ! client.id.equals(it, ignoreCase = true)) Log.i(client.tag, "设置客户端ID：$it")
+                client.id = it
+            }
+            ClientType?.also {
+                if (client.type.isBlank() || ! client.type.equals(it, ignoreCase = true)) Log.i(client.tag, "设置客户端类型：$it")
+                client.type = it
+            };
             val type = root["type"].objToString();
             val messageID = root["ID"].objToString();
             if (type.isNullOrBlank() || messageID.isNullOrBlank()) {
@@ -124,7 +140,7 @@ class MyBusinessHandler : ChannelInboundHandlerAdapter() {
                 client.sendMessage(it);
             }
         } catch (e: Exception) {
-            log.e("处理消息时出现异常${channel.remoteAddress()}${if (client.isInitialized) "[${client.name}]" else ""}", e)
+            log.e("处理消息时出现异常${channel.remoteAddress()}${if (client.name.isNotBlank()) "[${client.name}]" else ""}", e)
         }
     }
     /**
@@ -149,7 +165,7 @@ class MyBusinessHandler : ChannelInboundHandlerAdapter() {
         val channel = ctx.channel();
         val id = channel.id().toString();
         val client = clients[id];
-        log.i("一个客户端断开：${ctx.channel().remoteAddress()}${client?.let { if (it.isInitialized) "[${it.name}]" else "" } ?: ""}")
+        log.i("一个客户端断开：${ctx.channel().remoteAddress()}${client?.let { if (it.name.isNotBlank()) "[${it.name}]" else "" } ?: ""}")
         clients.remove(id);
     }
 }

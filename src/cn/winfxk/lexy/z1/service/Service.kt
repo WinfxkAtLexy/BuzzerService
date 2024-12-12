@@ -92,6 +92,7 @@ class Service : ChannelInitializer<Channel>(), StartView {
         log.i("正在关闭监听服务..")
         Deploy.deploy.config.set("总请求数", MyBusinessHandler.maxRequestCount);
         Deploy.deploy.config.set("最大报警数", MyBusinessHandler.maxAlarmsCount)
+        Deploy.deploy.config.set("运行时间", MyBusinessHandler.maxRunTime)
         isRunning = false;
         group.shutdownGracefully();
         worker.shutdownGracefully()

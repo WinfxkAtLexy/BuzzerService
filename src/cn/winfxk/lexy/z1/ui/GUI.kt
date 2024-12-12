@@ -26,7 +26,6 @@ import cn.winfxk.tool.view.MyJPanel
 import java.awt.Color
 import java.awt.Cursor
 import java.awt.Point
-import java.awt.Toolkit
 import java.awt.event.WindowEvent
 import java.awt.event.WindowListener
 import java.util.*

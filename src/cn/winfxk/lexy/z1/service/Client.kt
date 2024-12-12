@@ -34,9 +34,8 @@ import java.util.*
 class Client(val handler: MyBusinessHandler, val channel: Channel) : Tabable {
     val address = (channel.remoteAddress() as InetSocketAddress)
     val IP = address.address.hostName;
-    lateinit var id: String;
-    lateinit var name: String;
-    var isInitialized = false;
+    var id: String = "";
+    var name: String = "";
     lateinit var config: Config;
     var type = "";
 
@@ -67,11 +66,11 @@ class Client(val handler: MyBusinessHandler, val channel: Channel) : Tabable {
     }
 
     override fun getTAG(): String {
-        return if (isInitialized) "$name($id)" else IP;
+        return if (name.isNotBlank() || id.isNotBlank()) "$name($id)" else IP;
     }
 
     fun close() {
-        Log.i(tag, "正在关闭链接[${if (isInitialized) "$name-" else ""}$IP:${address.port}]..")
+        Log.i(tag, "正在关闭链接[${if (name.isNotBlank()) "$name-" else ""}$IP:${address.port}]..")
         config.set("上次在线时间", format.format(Date()));
         config.save();
     }
@@ -79,13 +78,13 @@ class Client(val handler: MyBusinessHandler, val channel: Channel) : Tabable {
      * 刷新客户端信息
      */
     fun reload() {
-        if (! isInitialized) return;
         config = Config(File(Deploy.deploy.clients, "$id.json"));
         val ips = config.getMap("IPs", HashMap()).let {
             if (it.isNullOrEmpty()) return@let HashMap<String, Any?>();
             HashMap<String, Any?>().also { map -> map.putAll(it) }
         }
         ips[IP] = format.format(Date());
+        config.set("ClientType", type);
         config.set("name", name);
         config.set("请求次数", config.getInt("请求次数", 0) + 1);
         if (! config.file.exists() || ! config.file.isFile) config.save();

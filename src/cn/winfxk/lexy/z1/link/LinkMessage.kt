@@ -17,6 +17,7 @@ package cn.winfxk.lexy.z1.link
 
 import cn.winfxk.lexy.z1.isRunning
 import cn.winfxk.lexy.z1.message.Message
+import cn.winfxk.lexy.z1.message.MessageType
 import cn.winfxk.lexy.z1.service.Client
 import cn.winfxk.lexy.z1.service.MyBusinessHandler
 import cn.winfxk.libk.log.Log
@@ -45,6 +46,7 @@ class LinkMessage(client: Client, val key: String, val json: JSONObject) : Runna
             it["key"] = key;
             it["CallID"] = key;
         },
+        type = MessageType.Request
     )
 
     init {
@@ -76,7 +78,7 @@ class LinkMessage(client: Client, val key: String, val json: JSONObject) : Runna
         try {
             var isCall = false;
             for (client in MyBusinessHandler.getClients().values) {
-                if (client.type.equals(callTo, ignoreCase = true) || client.type.equals(callAt, ignoreCase = true) || Client.allType.equals(callTo, ignoreCase = true)) {
+                if (client.type.equals(callTo, ignoreCase = true) || client.type.equals(callAt, ignoreCase = true) || Client.allType.equals(client.type, ignoreCase = true)) {
                     client.sendMessage(message) {
                         isCall = true;
                         if (isFarstCall) {
