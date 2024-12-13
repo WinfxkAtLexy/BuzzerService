@@ -32,7 +32,7 @@ import java.io.File
 class Deploy {
     val toolkit: Toolkit = Toolkit.getDefaultToolkit();
     val screenSize: Dimension = toolkit.screenSize;
-    val defaultDir = File("BuzzerServices/");
+    val defaultDir =Logsave.defaultDir;
     private lateinit var icon: BufferedImage;
     private lateinit var settingIcon: BufferedImage;
     private lateinit var backIcon: BufferedImage;

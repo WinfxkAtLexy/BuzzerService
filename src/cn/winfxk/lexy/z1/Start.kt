@@ -39,7 +39,7 @@ class Start : MyJPanel() {
 
     companion object {
         private val deploy = Deploy.deploy;
-        private val width = Tool.getMath(600, 400, (deploy.screenSize.width / 4).toInt());
+        private val width = Tool.getMath(600, 400, (deploy.screenSize.width / 4));
         private val height = Tool.getMath(300, 150, (deploy.screenSize.height / 3.6).toInt());
         private val x = deploy.screenSize.width / 2 - width / 2;
         private val y = deploy.screenSize.height / 2 - height / 2;
@@ -103,6 +103,9 @@ const val version = "v1.0.alpha"
 var isRunning = false;
 fun main() {
     Log.i("程序初始化...")
+    val logsave = Logsave();
+    Log.addListener(logsave)
+    Thread(logsave).start();
     isRunning = true;
     val log = Log("initialize");
     log.i("应用程序加载中...")
@@ -136,5 +139,6 @@ fun close(status: Int = - 1) {
     Log.i("Close", "关闭前保存数据")
     Deploy.deploy.config.save();
     Log.i("Close", "关闭应用程序...")
+    Logsave.getMain().close();
     exitProcess(status)
 }
