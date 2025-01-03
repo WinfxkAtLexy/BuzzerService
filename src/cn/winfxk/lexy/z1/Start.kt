@@ -2,6 +2,7 @@ package cn.winfxk.lexy.z1
 
 import cn.winfxk.lexy.z1.link.CallService
 import cn.winfxk.lexy.z1.service.Service
+import cn.winfxk.lexy.z1.service.dtu.DTUService
 import cn.winfxk.lexy.z1.tray.MySystemTray
 import cn.winfxk.lexy.z1.ui.GUI
 import cn.winfxk.libk.log.Log
@@ -117,6 +118,7 @@ fun main() {
         Service().start();
         GUI().showFrame();
         CallService().start();
+        Thread(DTUService()).start();
         if (MySystemTray.isSystemTray) MySystemTray().start(); else Log.i("当前系统环境暂不支持托盘，跳过创建..")
         log.i("应用程序已加载完成！")
         start.hideFrame()

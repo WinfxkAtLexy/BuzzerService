@@ -32,7 +32,7 @@ import java.io.File
 class Deploy {
     val toolkit: Toolkit = Toolkit.getDefaultToolkit();
     val screenSize: Dimension = toolkit.screenSize;
-    val defaultDir =Logsave.defaultDir;
+    val defaultDir = Logsave.defaultDir;
     private lateinit var icon: BufferedImage;
     private lateinit var settingIcon: BufferedImage;
     private lateinit var backIcon: BufferedImage;
@@ -43,6 +43,7 @@ class Deploy {
     private lateinit var normalIcon: BufferedImage;
     private lateinit var CautionIcon: BufferedImage;
     private var port = 1998;
+    private var DTUPort = 1999;
     val config = Config(File(defaultDir, "config.json"))
     /**
      * 存储链接过的客户端的信息
@@ -70,6 +71,7 @@ class Deploy {
         normalIcon = this.getImageByjar("normal.png") ?: throwException("无法加载资源：normal.png");
         CautionIcon = this.getImageByjar("Caution.png") ?: throwException("无法加载资源：Caution.png");
         port = config.getInt("port", 1998);
+        DTUPort = config.getInt("DTUPort", 1999);
         if (port <= 0) {
             log.e("设置的监听端口不正确！");
             throw Exception("设置的监听端口不正确！");
@@ -86,6 +88,7 @@ class Deploy {
      * 服务器监听端口
      */
     fun getPort() = port;
+    fun getDTUPort() = DTUPort;
     fun getIcon() = icon;
     fun getSettingIcon() = settingIcon;
     fun getBackIcon() = backIcon;
